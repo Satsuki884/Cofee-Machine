@@ -1,4 +1,4 @@
-package com.example.myapplication.ui
+package com.example.myapplication.ui.views
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -6,43 +6,52 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.example.myapplication.R
-import com.example.myapplication.adapters.Contract
-import com.example.myapplication.adapters.MainPresenter
-import com.example.myapplication.core.interactors.Model
 import com.example.myapplication.core.entities.OrderCoffee
 import com.example.myapplication.core.entities.Resources
+import com.example.myapplication.core.interactors.BuyCoffeeInteractor
+import com.example.myapplication.core.interactors.FillCoffeeMachineInteractor
+import com.example.myapplication.core.interactors.TakeMoneyInteractor
+import com.example.myapplication.data.repositories.FakeMachineRepository
+import com.example.myapplication.ui.adapters.MainPresenter
+import com.example.myapplicationempty.ui.adapters.Contract
 
 class MainActivity : AppCompatActivity(), Contract.View{
 
-    private val presenter = MainPresenter(Model())
+
+
+    private val presenter = MainPresenter(
+        BuyCoffeeInteractor(FakeMachineRepository()),
+        TakeMoneyInteractor(FakeMachineRepository()),
+        FillCoffeeMachineInteractor(FakeMachineRepository())
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        val info: TextView = findViewById(R.id.textView5)
         presenter.attach(this)
 
-        val info: TextView = findViewById(R.id.textView5)
+
 
         val espresso: Button = findViewById(R.id.button)
         espresso.setOnClickListener {
             val informationAboutCoffee = OrderCoffee("Espresso")
             val information = presenter.buy(informationAboutCoffee)
-            info.text = information.somethingString
+            info.text = information.response
         }
 
         val latte: Button = findViewById(R.id.button2)
         latte.setOnClickListener {
             val informationAboutCoffee = OrderCoffee("Latte")
             val information = presenter.buy(informationAboutCoffee)
-            info.text = information.somethingString
+            info.text = information.response
         }
 
         val cappuccino: Button = findViewById(R.id.button3)
         cappuccino.setOnClickListener {
             val informationAboutCoffee = OrderCoffee("Cappuccino")
             val information = presenter.buy(informationAboutCoffee)
-            info.text = information.somethingString
+            info.text = information.response
         }
 
         val fill: Button = findViewById(R.id.button4)
@@ -61,15 +70,14 @@ class MainActivity : AppCompatActivity(), Contract.View{
             val cups  = idCups.toString().toInt()
             val resources = Resources(water, milk, coffeeBeans, cups)
             val information = presenter.fillAll(resources)
-            info.text = information.somethingString
+            info.text = information.response
         }
 
         val takeMoney: Button = findViewById(R.id.button5)
         takeMoney.setOnClickListener {
             val information = presenter.take()
-            info.text = information.somethingString
+            info.text = information.response
         }
 
     }
-
 }
