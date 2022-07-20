@@ -1,4 +1,3 @@
 package com.example.myapplication.core.entities
 
-data class OrderCoffee(val typeOfCoffee: String)
-
+data class OrderCoffee(val orderCoffee: String)
