@@ -1,11 +1,10 @@
 package com.example.myapplication.data.repositories
 
-import com.example.myapplication.core.entities.Coffee
-import com.example.myapplication.core.entities.OrderCoffee
-import com.example.myapplication.core.entities.Resources
-import com.example.myapplication.core.entities.Response
+import com.example.myapplication.core.entities.*
+import com.example.myapplication.data.network.*
+import com.example.myapplication.data.mappers.*
 
-class FakeMachineRepository : ActionRepository {
+class FakeMachineRepository: ActionRepository {
 
     object coffeeMachine{
         var water: Int = 400
@@ -21,7 +20,9 @@ class FakeMachineRepository : ActionRepository {
         return Response("I gave you $temp")
     }
 
-    override fun checkIngr(coffee: Coffee) : String {
+    fun checkIngr(coffee: Coffee, price: Int) : String {
+        var remainder = 0f
+        var yourChange = "Your change: $remainder"
         if (coffeeMachine.water < coffee.water) {
             return ("Sorry, not enough water! \n")
         }else if (coffeeMachine.milk < coffee.milk) {
@@ -30,14 +31,21 @@ class FakeMachineRepository : ActionRepository {
             return ("Sorry, not enough coffee beans! \n")
         }else if (coffeeMachine.cups <= 0){
             return ("Sorry, not enough cups! \n")
+        } else if(coffee.cost > price) {
+            return ("Sorry, not enough money")
         } else {
-            calculations(coffee)
-            return ("I have enough resources, making you a coffee! \n")
-
+            if(price > coffee.cost){
+                remainder = (coffee.cost - price).toFloat()
+                calculations(coffee)
+                return ("I have enough resources, making you a coffee! \n$yourChange")
+            } else{
+                calculations(coffee)
+                return ("I have enough resources, making you a coffee! \n")
+            }
         }
     }
 
-    override fun calculations(coffee: Coffee) {
+    fun calculations(coffee: Coffee) {
         coffeeMachine.water -= coffee.water
         coffeeMachine.milk -= coffee.milk
         coffeeMachine.cofeeBeans -= coffee.coffeeBeans
@@ -64,13 +72,17 @@ class FakeMachineRepository : ActionRepository {
         return Response(remaining())
     }
 
-    override fun buy(coffee: OrderCoffee) : Response {
+    override fun buy(coffee: OrderCoffee, price: Response) : Response {
         val cooffee = when (coffee.orderCoffee){
-            "Espresso" -> Response(checkIngr(Coffee.ESPRESSO) + remaining())
-            "Latte" -> Response(checkIngr(Coffee.LATTE) + remaining())
-            else -> Response(checkIngr(Coffee.CAPPUCCINO) + remaining())
+            "Espresso" -> Response(checkIngr(Coffee.ESPRESSO, price.response.toInt()) + remaining())
+            "Latte" -> Response(checkIngr(Coffee.LATTE, price.response.toInt()) + remaining())
+            else -> Response(checkIngr(Coffee.CAPPUCCINO, price.response.toInt()) + remaining())
         }
         return cooffee
+    }
+
+    override fun makeNetworkExchange(payment: Payment): Payment {
+        TODO("Not yet implemented")
     }
 
 
