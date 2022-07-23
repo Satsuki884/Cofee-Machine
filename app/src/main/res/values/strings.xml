@@ -5,13 +5,16 @@
     <string name="write_how_many_disposable_cups_of_coffee_do_you_want_to_add">Write how many disposable cups of coffee do you want to add</string>
     <string name="write_how_many_grams_of_coffee_beans_do_you_want_to_add">Write how many grams of coffee beans do you want to add</string>
     <string name="write_how_many_ml_of_milk_do_you_want_to_add">Write how many ml of milk do you want to add</string>
-    <string name="cappuccino">Cappuccino</string>
     <string name="write_how_many_ml_of_water_do_you_want_to_add">Write how many ml of water do you want to add</string>
-    <string name="latte">Latte</string>
-    <string name="espresso">Espresso</string>
     <string name="beginning_of_work_what_would_you_like_to_buy">Beginning of work what would you like to buy</string>
     <string name="water">Water</string>
     <string name="milk">Milk</string>
     <string name="cups">Cups</string>
     <string name="coffee_beans">Coffee beans</string>
+    <string name="enter_money">Enter money</string>
+    <string name="latte_7_eur">LATTE | 7 EUR</string>
+    <string name="cappuccino_6_eur">CAPPUCCINO | 6 EUR</string>
+    <string name="espresso_4_eur">ESPRESSO | 4 EUR</string>
+    <string name="history">History</string>
+    <string name="currency">Currency</string>
 </resources>

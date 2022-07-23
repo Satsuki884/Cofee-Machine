@@ -7,8 +7,10 @@ import android.widget.EditText
 import android.widget.TextView
 import com.example.myapplication.R
 import com.example.myapplication.core.entities.OrderCoffee
+import com.example.myapplication.core.entities.Payment
 import com.example.myapplication.core.entities.Resources
 import com.example.myapplication.core.interactors.BuyCoffeeInteractor
+import com.example.myapplication.core.interactors.ExchangeCurrencyInteractor
 import com.example.myapplication.core.interactors.FillCoffeeMachineInteractor
 import com.example.myapplication.core.interactors.TakeMoneyInteractor
 import com.example.myapplication.data.repositories.FakeMachineRepository
@@ -22,7 +24,8 @@ class MainActivity : AppCompatActivity(), Contract.View{
     private val presenter = MainPresenter(
         BuyCoffeeInteractor(FakeMachineRepository()),
         TakeMoneyInteractor(FakeMachineRepository()),
-        FillCoffeeMachineInteractor(FakeMachineRepository())
+        FillCoffeeMachineInteractor(FakeMachineRepository()),
+        ExchangeCurrencyInteractor(FakeMachineRepository())
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,21 +39,42 @@ class MainActivity : AppCompatActivity(), Contract.View{
         val espresso: Button = findViewById(R.id.button)
         espresso.setOnClickListener {
             val informationAboutCoffee = OrderCoffee("Espresso")
-            val information = presenter.buy(informationAboutCoffee)
+            val gotMoney: EditText = findViewById(R.id.editText5)
+            val idMoney = gotMoney.text
+            val money = idMoney.toString().toFloat()
+            val gotCurrency: EditText = findViewById(R.id.editText6)
+            val idCurrency = gotCurrency.text
+            val currency = idCurrency.toString()
+            val paymentInfo = Payment(amount = money, currency = currency)
+            val information = presenter.buy(informationAboutCoffee, paymentInfo)
             info.text = information.response
         }
 
         val latte: Button = findViewById(R.id.button2)
         latte.setOnClickListener {
             val informationAboutCoffee = OrderCoffee("Latte")
-            val information = presenter.buy(informationAboutCoffee)
+            val gotMoney: EditText = findViewById(R.id.editText5)
+            val idMoney = gotMoney.text
+            val money = idMoney.toString().toFloat()
+            val gotCurrency: EditText = findViewById(R.id.editText6)
+            val idCurrency = gotCurrency.text
+            val currency = idCurrency.toString()
+            val paymentInfo = Payment(amount = money, currency = currency)
+            val information = presenter.buy(informationAboutCoffee, paymentInfo)
             info.text = information.response
         }
 
         val cappuccino: Button = findViewById(R.id.button3)
         cappuccino.setOnClickListener {
             val informationAboutCoffee = OrderCoffee("Cappuccino")
-            val information = presenter.buy(informationAboutCoffee)
+            val gotMoney: EditText = findViewById(R.id.editText5)
+            val idMoney = gotMoney.text
+            val money = idMoney.toString().toFloat()
+            val gotCurrency: EditText = findViewById(R.id.editText6)
+            val idCurrency = gotCurrency.text
+            val currency = idCurrency.toString()
+            val paymentInfo = Payment(amount = money, currency = currency)
+            val information = presenter.buy(informationAboutCoffee, paymentInfo)
             info.text = information.response
         }
 
